@@ -11,7 +11,8 @@ function userAtendente(data) {
     //pega o elemento ul para adicionar as vagas
     let vacancy_list = document.querySelector(".list-item-set");
 
-    data?.map((elem, index) => {
+    for(let i = 0; i < data.length; i++) {
+        let elem = data[i]
         let vaga = elem;
         let estadia = elem.estadia || {}
         let client = estadia.cliente || {};
@@ -32,7 +33,7 @@ function userAtendente(data) {
         //cria a tag que irá todas a vagas
         let form = document.createElement("form");
         form.className = "data-vacancy";
-        form.setAttribute("action", board_car ? `/estadias/${estadia.id}` : `/estadias`);
+        form.setAttribute("action", board_car ? `/estadias/${elem.id}` : `/estadias`);
         form.setAttribute("method", "post");
 
         //cria a tag status
@@ -172,14 +173,14 @@ function userAtendente(data) {
             card_payment.className = "redirect_confirm_pay"
             card_payment.innerHTML = '<i class="fa-regular fa-credit-card" ></i>'
             btn_payment.appendChild(card_payment)
-            card_payment.setAttribute("href", `/pagamentos/novo?estadia_id=${estadia.id}`)
+            card_payment.setAttribute("href", `/pagamentos/novo?estadia_id=${elem.id}`)
         }
 
         //se vaga não possui placa cadastrada, add as opcões de plano no select e a função se houver mudança de plano
         if (vacancy_status) {
             plan_option.appendChild(plan_option_diary);
             plan_option.appendChild(plan_option_monthly);
-            plan_option.setAttribute("onchange", `handleChangePlan(${index})`);
+            plan_option.setAttribute("onchange", `handleChangePlan(${i})`);
 
             item_type.appendChild(carRide);
             item_type.appendChild(motorcycle);
@@ -221,7 +222,7 @@ function userAtendente(data) {
         plan_option_diary.setAttribute("selected", "");
 
         expiration_date.innerHTML = exit_car ? "" : dateFormat;
-    });
+    }
 }
 
 function handleChangePlan(index) {
@@ -290,8 +291,9 @@ const alertBoard = (event) => {
 function userGerente(data) {
     //pega o elemento ul para adicionar as vagas
     let vacancy_list = document.querySelector(".list-item-set");
-
-    data?.map((elem, index) => {
+    console.log(data[0].id)
+    for(let i = 0; i < data.length; i++) {
+        let elem = data[i]
         let vaga = elem;
         let estadia = elem.estadia || {};
         let client = estadia.cliente || {};
@@ -313,7 +315,7 @@ function userGerente(data) {
         //cria a tag que irá todas a vagas
         let form = document.createElement("form");
         form.className = "data-vacancy";
-        form.setAttribute("action", estadia.id ? `/estadias/${estadia.id}/encerrar` : "/estadias");
+        form.setAttribute("action", `$/estadias/?estadias=${elem.id}/encerrar:/estadias`);
         form.setAttribute("method", "post");
         form.setAttribute("onsubmit", "submitForm(this); return false;");
 
@@ -459,7 +461,7 @@ function userGerente(data) {
             card_payment.className = "redirect_confirm_pay"
             card_payment.innerHTML = '<i class="fa-regular fa-credit-card" ></i>'
             btn_payment.appendChild(card_payment)
-            card_payment.setAttribute("href", `/pagamentos/novo?estadia_id=${estadia.id}`)
+            card_payment.setAttribute("href", `/pagamentos/novo?estadia_id=${elem.id}`)
             btn_action.setAttribute("disabled", "")
             btn_action.style.cursor = "initial"
         }
@@ -467,7 +469,7 @@ function userGerente(data) {
         //se vaga não possui placa cadastrada, add as opcões de plano no select e a função se houver mudança de plano
         plan_option.appendChild(plan_option_diary);
         plan_option.appendChild(plan_option_monthly);
-        plan_option.setAttribute("onchange", `handleChangePlan(${index})`);
+        plan_option.setAttribute("onchange", `handleChangePlan(${i})`);
 
 
         let type_car = car.tipo
@@ -528,8 +530,8 @@ function userGerente(data) {
         }
 
         expiration_date.innerHTML = exit_car ? "" : dateFormat;
+    }
 
-    });
 }
 
 async function submitForm(form) {
@@ -548,8 +550,8 @@ async function submitForm(form) {
     })
     .then((response) => response.json())
     .then((estadia) => {
-      if(estadia.saida != null) {
-        location.href = `/pagamentos/novo?estadia_id=${estadia.id}`;
+      if(elem.saida != null) {
+        location.href = `/pagamentos/novo?estadia_id=${elem.id}`;
       } else {
         alert('TODO: tratar retorno da criação de estadias')
       }
