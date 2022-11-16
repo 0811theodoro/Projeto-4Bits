@@ -14,8 +14,8 @@ spring:
 spring:
   profiles: dev
   datasource:
-    url: jdbc:mysql://db-4bits-dev.cluster-cpzlzhw8kx2v.sa-east-1.rds.amazonaws.com/estacionamento
-    username: admin
-    password: 12345678
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/estacionamento
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:secret}
   liquibase:
     contexts: dev
