@@ -54,6 +54,7 @@
 						<li class="title-list title-plan">Plano</li>
 						<li class="title-list title-expiration">Saída</li>
 						<li class="title-list title-action"></li>
+						<li class="title-list title-edit"></li>
 						<li class="title-list title-pay"></li>
 					</ul>
 					<div>
@@ -178,6 +179,19 @@
 									{{/if}}
 							</button>
 						</div>
+
+						{{#if ("[[${#httpServletRequest.remoteUser}]]" '==' "gerente")}}
+							<div class="item-list item-edit">
+								{{#if car.placa}}
+									<button
+										type="submit"
+										class="btn "
+									>
+										Editar
+									</button>
+								{{/if}}
+							</div>
+						{{/if}}
 
 						<div class="item-list item-payment">
 							{{#if (and car.placa (not estadia.pagamento) estadia.saida)}}
